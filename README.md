@@ -1,54 +1,75 @@
-# MJ Bakery Delights Website + CMS
+# MJ Bakery Delights — Firebase version
 
-A responsive React + Supabase bakery website with a private admin CMS, category-based cake gallery, current specials, WhatsApp quote flow, contact details, Google Maps embed area and an Elfsight reviews placeholder.
+React + Vite website using Firebase Authentication, Cloud Firestore and Firebase Storage. No Supabase code or package is included.
 
-## Included
+## 1. Remove Supabase from your existing project
 
-- Home page with premium MJ gold/cream branding, calls to action and Elfsight review section.
-- Cakes gallery filtered by categories.
-- WhatsApp enquiry button on every cake image.
-- Specials page with title, image, price, flavour and end date.
-- Contact/quote form that builds a detailed WhatsApp message including customer name + WhatsApp number, order type, flavour, cake size, collection date, inspiration link and description.
-- Google Maps embed slot.
-- Secure `/admin` login using Supabase Auth.
-- Admin can add/delete gallery cakes and add/edit/delete specials.
-- Supabase Storage for uploaded cake images.
-- Row Level Security based on an `admins` table.
+Run:
 
-## Setup (about 10 minutes)
+```bash
+npm uninstall @supabase/supabase-js
+```
 
-1. Create a free Supabase project.
-2. Open **SQL Editor**, paste all of `supabase.sql`, and run it.
-3. In **Authentication → Users**, create the bakery owner user with email + password.
-4. In SQL Editor run:
+Then delete `src/supabase.js` and `supabase.sql` if they still exist.
 
-   `insert into public.admins(email) values ('THE_OWNER_EMAIL');`
+## 2. Install Firebase
 
-5. Copy `.env.example` to `.env` and add the Supabase Project URL + anon key. Put the same owner email in `VITE_ADMIN_EMAIL`.
-6. Keep `VITE_WHATSAPP_NUMBER=27769696703` unless the business number changes.
-7. On Google Maps, find the bakery, choose **Share → Embed a map**, copy the URL inside `src="..."`, and place it in `VITE_MAPS_EMBED_URL`.
-8. For Elfsight Google Reviews, create the widget in Elfsight. You can paste their embed script into `index.html` and replace the placeholder area in `src/pages/Home.jsx`. The project deliberately leaves this as a safe placeholder because the actual Elfsight App ID is unique to the bakery account.
-9. Run:
+```bash
+npm install firebase
+```
 
-   `npm install`
-   `npm run dev`
+Or use this clean project and run:
 
-10. Website routes: `/`, `/cakes`, `/specials`, `/contact`. Admin is `/admin`.
+```bash
+npm install
+npm run dev
+```
 
-## Deploy
+## 3. Create Firebase project
 
-This is Vite/React and can be deployed to Netlify, Vercel or Cloudflare Pages. Build command: `npm run build`. Publish directory: `dist`.
+In Firebase Console:
+1. Create a project.
+2. Add a Web App.
+3. Enable Authentication > Sign-in method > Email/Password.
+4. Create the bakery owner's Auth user.
+5. Create a Cloud Firestore database.
+6. Create Firebase Storage.
+7. Copy the Web App config values into `.env` using `.env.example`.
 
-For Netlify SPA routing, add a `_redirects` file under `public` with: `/* /index.html 200`.
+## 4. Make the owner the only admin
 
-## Business details already added
+After creating the owner's Firebase Authentication user, copy their UID.
 
-Phone / WhatsApp: 076 9696 703
-Email: mjbakery23@gmail.com
-Facebook: the link supplied for MJ Bakery Delights.
+In Firestore create:
 
-Working hours are starter values in `src/config.js` and can be changed once the bakery confirms the exact hours. Instagram/TikTok are placeholders until the final profile URLs are supplied.
+```text
+admins
+  └── OWNER_FIREBASE_UID
+      └── email: mjbakery23@gmail.com
+```
 
-## Adding more categories later
+The document ID must be the exact Firebase Auth UID.
 
-Add the category in the Supabase `categories` table. It will automatically appear in the gallery filter and admin upload form. You can also add a small category-management form later without changing the database design.
+## 5. Categories
+
+Create the `categories` collection with documents containing:
+
+```text
+name: Wedding Cakes
+sort_order: 1
+```
+
+Suggested values are in `src/config.js`.
+
+## 6. Security rules
+
+Copy `firestore.rules` into Firestore Rules and publish.
+Copy `storage.rules` into Storage Rules and publish.
+
+## 7. Environment
+
+Copy `.env.example` to `.env` and fill in the Firebase Web App values.
+
+## 8. Admin
+
+Open `/admin`, sign in with the Firebase owner account, and add cakes/specials.
