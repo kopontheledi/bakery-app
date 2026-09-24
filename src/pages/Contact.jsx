@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, ShoppingBag, CakeSlice, ExternalLink } from 'lucide-react';
 import { BUSINESS, FLAVOURS, SIZES, ORDER_TYPES, COLLECTION_TIMES } from '../config';

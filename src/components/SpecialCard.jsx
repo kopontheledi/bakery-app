@@ -1,3 +1,4 @@
+import React from 'react';
 import { MessageCircle, Clock } from 'lucide-react';
 import { waLink, money, fmtDate } from '../utils';
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { Menu, X, Instagram, Facebook, Phone } from 'lucide-react';
 import { useState } from 'react';
@@ -10,6 +11,8 @@ export default function Layout() {
     ['/', 'Home'],
     ['/cakes', 'Cakes'],
     ['/specials', 'Specials'],
+    ['/policies', 'Policies'],
+    ['/cake-servings', 'Cake Servings'],
     ['/contact', 'Contact & Quote'],
   ];
 
@@ -60,11 +63,28 @@ export default function Layout() {
 
         <div>
           <b>Explore</b>
-          <a href="/cakes">Cake Gallery</a>
-          <a href="/specials">Specials</a>
-          <a href="/contact">Request a Quote</a>
-        </div>
 
+          <a href="/cakes">
+            Cake Gallery
+          </a>
+
+          <a href="/specials">
+            Specials
+          </a>
+
+          <a href="/cake-servings">
+            Cake Servings
+          </a>
+
+          <a href="/policies">
+            Ordering Policies
+          </a>
+
+          <a href="/contact">
+            Request a Quote
+          </a>
+        </div>
+        
         <div>
           <b>Connect</b>
           <a href={BUSINESS.facebook} target="_blank" rel="noreferrer">
